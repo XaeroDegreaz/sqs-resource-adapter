@@ -1,0 +1,22 @@
+<resources>
+    <Container
+        id="container/mdb"
+        type="MESSAGE">
+        ResourceAdapter = ra/sqs
+        ActivationSpecClass = com.dobydigital.sqs.SqsActivationSpec
+    </Container>
+    <Resource
+        id="ra/sqs"
+        type="SqsResourceAdapter"
+        provider="com.dobydigital.jms:SqsResourceAdapter">
+    </Resource>
+    <Resource
+        id="jms/connectionFactory"
+        type="com.dobydigital.sqs.SqsFactory"
+        provider="com.dobydigital.jms:SqsFactory">
+        ResourceAdapter = ra/sqs
+        AwsRegion = us-east-1
+        AwsAccessKey = AKIAI46LYFYJENWMJ3UA
+        AwsAccessKeySecret = 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
+    </Resource>
+</resources>
