@@ -4,7 +4,7 @@
         id="SqsResourceAdapter"
         service="Resource"
         types="SqsResourceAdapter"
-        class-name="com.dobydigital.sqs.SqsResourceAdapter">
+        class-name="com.dobydigital.sqsresourceadapter.SqsResourceAdapter">
         UserName
         Password
         ProviderIntegrationMode
@@ -30,8 +30,8 @@
     <ServiceProvider
         id="SqsFactory"
         service="Resource"
-        types="com.dobydigital.sqs.SqsFactory"
-        class-name="com.dobydigital.sqs.SqsFactory">
+        types="com.dobydigital.sqsresourceadapter.SqsFactory"
+        class-name="com.dobydigital.sqsresourceadapter.SqsFactory">
         ConnectionFactoryJndiName
         ClientId
         ConnectionValidationEnabled

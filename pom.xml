@@ -6,11 +6,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.dobydigital</groupId>
-    <artifactId>sqs-test</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>sqs-resource-adapter-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
     <modules>
-        <module>resource-adapter</module>
-        <module>sqs-service</module>
+        <module>sqs-resource-adapter</module>
+        <module>examples</module>
     </modules>
     <packaging>pom</packaging>
 </project>

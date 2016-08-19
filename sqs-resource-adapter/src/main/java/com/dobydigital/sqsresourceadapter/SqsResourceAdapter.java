@@ -1,4 +1,4 @@
-package com.dobydigital.sqs;
+package com.dobydigital.sqsresourceadapter;
 
 import com.amazon.sqs.javamessaging.AmazonSQSMessagingClientWrapper;
 import com.amazon.sqs.javamessaging.SQSConnection;

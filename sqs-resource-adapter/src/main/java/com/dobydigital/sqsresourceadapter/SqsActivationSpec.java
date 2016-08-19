@@ -1,4 +1,4 @@
-package com.dobydigital.sqs;
+package com.dobydigital.sqsresourceadapter;
 
 import javax.resource.ResourceException;
 import javax.resource.spi.ActivationSpec;

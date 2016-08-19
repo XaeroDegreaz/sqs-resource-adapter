@@ -19,7 +19,7 @@ import javax.ws.rs.Produces;
 @Produces( "text/plain" )
 public class SqsMessageProducer
 {
-    @Resource( name = "sqs/connectionFactory" )
+    @Resource( name = "jms/connectionFactory" )
     private ConnectionFactory factory;
     private final static Logger log = LoggerFactory.getLogger( SqsMessageProducer.class );
 

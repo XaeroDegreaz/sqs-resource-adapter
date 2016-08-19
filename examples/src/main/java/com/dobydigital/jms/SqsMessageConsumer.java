@@ -12,7 +12,7 @@ import javax.jms.TextMessage;
 @MessageDriven(
     activationConfig = {
         @ActivationConfigProperty( propertyName = "listener", propertyValue = "com.dobydigital.jms.SqsMessageConsumer" ),
-        @ActivationConfigProperty( propertyName = "destinationType", propertyValue = "javax.sqs.Queue" ),
+        @ActivationConfigProperty( propertyName = "destinationType", propertyValue = "javax.sqsresourceadapter.Queue" ),
         @ActivationConfigProperty( propertyName = "destination", propertyValue = "testQueue" )
     }
 )
