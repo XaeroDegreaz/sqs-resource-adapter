@@ -15,8 +15,8 @@
         type="com.dobydigital.sqsresourceadapter.SqsFactory"
         provider="com.dobydigital.sqsresourceadapter:SqsFactory">
         ResourceAdapter = ra/sqs
-        AwsRegion = us-east-1
-        AwsAccessKey = AKIAI46LYFYJENWMJ3UA
-        AwsAccessKeySecret = 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
+        AwsRegion = ${AWS_REGION}
+        AwsAccessKey = ${AWS_ACCESS_KEY}
+        AwsAccessKeySecret = ${AWS_ACCESS_KEY_SECRET}
     </Resource>
 </resources>
