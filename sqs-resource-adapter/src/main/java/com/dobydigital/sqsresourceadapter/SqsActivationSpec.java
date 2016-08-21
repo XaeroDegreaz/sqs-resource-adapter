@@ -8,13 +8,12 @@ import javax.resource.spi.ResourceAdapter;
 public class SqsActivationSpec implements ActivationSpec
 {
     private ResourceAdapter resourceAdapter;
-    private String listener;
     private String destination;
+    private String connectionFactory;
 
     @Override
     public void validate() throws InvalidPropertyException
     {
-
     }
 
     @Override
@@ -29,16 +28,6 @@ public class SqsActivationSpec implements ActivationSpec
         this.resourceAdapter = resourceAdapter;
     }
 
-    public String getListener()
-    {
-        return listener;
-    }
-
-    public void setListener( String listener )
-    {
-        this.listener = listener;
-    }
-
     public String getDestination()
     {
         return destination;
@@ -47,5 +36,15 @@ public class SqsActivationSpec implements ActivationSpec
     public void setDestination( String destination )
     {
         this.destination = destination;
+    }
+
+    public String getConnectionFactory()
+    {
+        return connectionFactory;
+    }
+
+    public void setConnectionFactory( String connectionFactory )
+    {
+        this.connectionFactory = connectionFactory;
     }
 }

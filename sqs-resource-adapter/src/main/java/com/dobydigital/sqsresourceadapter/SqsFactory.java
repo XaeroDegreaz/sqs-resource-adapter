@@ -20,6 +20,12 @@ public class SqsFactory implements ConnectionFactory, QueueConnectionFactory
     private String awsAccessKeySecret;
     private SqsResourceAdapter resourceAdapter;
     private SQSConnectionFactory.Builder builder;
+    private String id;
+
+    public static Connection getConnection( String username, String password ) throws JMSException
+    {
+        return new SqsFactory().createConnection( username, password );
+    }
 
     public SqsFactory()
     {
@@ -45,9 +51,9 @@ public class SqsFactory implements ConnectionFactory, QueueConnectionFactory
     }
 
     @Override
-    public QueueConnection createQueueConnection( String s, String s1 ) throws JMSException
+    public QueueConnection createQueueConnection( String username, String password ) throws JMSException
     {
-        return finalizeBuilder().build().createQueueConnection( s, s1 );
+        return finalizeBuilder().build().createQueueConnection( username, password );
     }
 
     private SQSConnectionFactory.Builder finalizeBuilder()
@@ -98,6 +104,16 @@ public class SqsFactory implements ConnectionFactory, QueueConnectionFactory
         this.awsAccessKeySecret = awsAccessKeySecret;
     }
 
+    public String getId()
+    {
+        return id;
+    }
+
+    public void setId( String id )
+    {
+        this.id = id;
+    }
+
     public SqsResourceAdapter getResourceAdapter()
     {
         return resourceAdapter;
@@ -106,7 +122,6 @@ public class SqsFactory implements ConnectionFactory, QueueConnectionFactory
     public void setResourceAdapter( SqsResourceAdapter resourceAdapter )
     {
         this.resourceAdapter = resourceAdapter;
-
-        resourceAdapter.setFactory( this );
+        resourceAdapter.addFactory( this );
     }
 }

@@ -14,6 +14,7 @@
         id="jms/connectionFactory"
         type="com.dobydigital.sqsresourceadapter.SqsFactory"
         provider="com.dobydigital.sqsresourceadapter:SqsFactory">
+        Id = jms/connectionFactory
         ResourceAdapter = ra/sqs
         AwsRegion = ${AWS_REGION}
         AwsAccessKey = ${AWS_ACCESS_KEY}
