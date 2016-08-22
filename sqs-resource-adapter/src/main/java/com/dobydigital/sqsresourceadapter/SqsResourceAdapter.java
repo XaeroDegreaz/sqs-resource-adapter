@@ -25,7 +25,7 @@ public class SqsResourceAdapter implements ResourceAdapter
 {
     private ConnectionFactory connectionFactory;
     private WorkManager workManager;
-    private Set<Work> works = new HashSet<>();
+    private Set<Work> jobs = new HashSet<>();
 
     @Override
     public void start( BootstrapContext ctx ) throws ResourceAdapterInternalException
@@ -36,15 +36,17 @@ public class SqsResourceAdapter implements ResourceAdapter
     @Override
     public void stop()
     {
-        works.forEach( Work::release );
+        for ( Work work : jobs )
+        {
+            work.release();
+        }
     }
 
     @Override
     public void endpointActivation( MessageEndpointFactory endpointFactory, ActivationSpec spec ) throws ResourceException
     {
-        MessageListener endpoint = (MessageListener) endpointFactory.createEndpoint( null );
-        SqsActivationSpec activationSpec = (SqsActivationSpec) spec;
-
+        final MessageListener endpoint = (MessageListener) endpointFactory.createEndpoint( null );
+        final SqsActivationSpec activationSpec = (SqsActivationSpec) spec;
         Work work = new Work()
         {
             private Connection connection;
@@ -85,14 +87,14 @@ public class SqsResourceAdapter implements ResourceAdapter
                 }
             }
         };
-        works.add( work );
+        jobs.add( work );
         workManager.doWork( work );
     }
 
     @Override
     public void endpointDeactivation( MessageEndpointFactory endpointFactory, ActivationSpec spec )
     {
-
+        //# TODO: Not quite sure what needs to happen at this point -- wouldn't this be handled by stop() or is this specific to an endpoint terminating?
     }
 
     @Override
