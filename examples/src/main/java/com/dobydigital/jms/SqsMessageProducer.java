@@ -25,9 +25,9 @@ public class SqsMessageProducer
 
     @GET
     @Path( "/send" )
-    public String postConstruct() throws Exception
+    public String send() throws Exception
     {
-        log.debug( "postConstruct() " );
+        log.debug( "send()" );
         Connection connection = factory.createConnection();
         Session session = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
         AmazonSQSMessagingClientWrapper client = ( (SQSConnection) connection ).getWrappedAmazonSQSClient();
