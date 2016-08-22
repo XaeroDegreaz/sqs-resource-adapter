@@ -5,26 +5,6 @@
         service="Resource"
         types="SqsResourceAdapter"
         class-name="com.dobydigital.sqsresourceadapter.SqsResourceAdapter">
-        UserName
-        Password
-        ProviderIntegrationMode
-        ConnectionFactoryClassName
-        QueueConnectionFactoryClassName
-        TopicConnectionFactoryClassName
-        XAConnectionFactoryClassName
-        XAQueueConnectionFactoryClassName
-        XATopicConnectionFactoryClassName
-        UnifiedDestinationClassName
-        TopicClassName
-        QueueClassName
-        SupportsXA
-        ConnectionFactoryProperties
-        JndiProperties
-        CommonSetterMethodName
-        RMPolicy
-        LogLevel
-        DeliveryType
-        UseFirstXAForRedelivery
     </ServiceProvider>
 
     <ServiceProvider
@@ -32,22 +12,9 @@
         service="Resource"
         types="com.dobydigital.sqsresourceadapter.SqsFactory"
         class-name="com.dobydigital.sqsresourceadapter.SqsFactory">
-        ConnectionFactoryJndiName
-        ClientId
-        ConnectionValidationEnabled
         ResourceAdapter
-    </ServiceProvider>
-
-    <ServiceProvider
-        id="Queue"
-        service="Resource"
-        types="javax.jms.Queue, Queue"
-        class-name="com.amazon.sqs.javamessaging.SQSQueueDestination">
-        DestinationJndiName
-        ResourceAdapter
-        UserName
-        Password
-        JndiProperties
-        QueueClassName
+        AwsRegion
+        AwsAccessKey
+        AwsAccessKeySecret
     </ServiceProvider>
 </ServiceJar>

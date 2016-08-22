@@ -2,8 +2,6 @@ package com.dobydigital.sqsresourceadapter;
 
 import com.amazon.sqs.javamessaging.AmazonSQSMessagingClientWrapper;
 import com.amazon.sqs.javamessaging.SQSConnection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
@@ -21,22 +19,13 @@ import javax.resource.spi.work.Work;
 import javax.resource.spi.work.WorkManager;
 import javax.transaction.xa.XAResource;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 public class SqsResourceAdapter implements ResourceAdapter
 {
-    private final static Logger log = LoggerFactory.getLogger( SqsResourceAdapter.class );
-    private String awsAccessKeySecret;
-    private ConnectionFactory factory;
-    private Connection connection;
+    private ConnectionFactory connectionFactory;
     private WorkManager workManager;
-    private Set<SqsFactory> factories = new HashSet<>();
-
-    public void addFactory( SqsFactory factory )
-    {
-        factories.add( factory );
-    }
+    private Set<Work> works = new HashSet<>();
 
     @Override
     public void start( BootstrapContext ctx ) throws ResourceAdapterInternalException
@@ -47,7 +36,7 @@ public class SqsResourceAdapter implements ResourceAdapter
     @Override
     public void stop()
     {
-
+        works.forEach( Work::release );
     }
 
     @Override
@@ -55,7 +44,8 @@ public class SqsResourceAdapter implements ResourceAdapter
     {
         MessageListener endpoint = (MessageListener) endpointFactory.createEndpoint( null );
         SqsActivationSpec activationSpec = (SqsActivationSpec) spec;
-        workManager.doWork( new Work()
+
+        Work work = new Work()
         {
             private Connection connection;
 
@@ -77,7 +67,7 @@ public class SqsResourceAdapter implements ResourceAdapter
             {
                 try
                 {
-                    connection = factories.stream().filter( f -> Objects.equals( f.getId(), activationSpec.getConnectionFactory() ) ).findFirst().get().createConnection();
+                    connection = connectionFactory.createConnection();
                     Session session = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
                     AmazonSQSMessagingClientWrapper client = ( (SQSConnection) connection ).getWrappedAmazonSQSClient();
                     if ( !client.queueExists( activationSpec.getDestination() ) )
@@ -94,26 +84,9 @@ public class SqsResourceAdapter implements ResourceAdapter
                     e.printStackTrace();
                 }
             }
-        } );
-        /*try
-        {
-
-            connection = factory.createConnection();
-            Session session = connection.createSession( false, Session.AUTO_ACKNOWLEDGE );
-            AmazonSQSMessagingClientWrapper client = ( (SQSConnection) connection ).getWrappedAmazonSQSClient();
-            if ( !client.queueExists( activationSpec.getDestination() ) )
-            {
-                client.createQueue( activationSpec.getDestination() );
-            }
-            Queue queue = session.createQueue( activationSpec.getDestination() );
-            MessageConsumer messageConsumer = session.createConsumer( queue );
-            messageConsumer.setMessageListener( listener );
-            connection.start();
-        }
-        catch ( Exception e )
-        {
-            e.printStackTrace();
-        }*/
+        };
+        works.add( work );
+        workManager.doWork( work );
     }
 
     @Override
@@ -128,18 +101,11 @@ public class SqsResourceAdapter implements ResourceAdapter
         return new XAResource[ 0 ];
     }
 
-    public String getAwsAccessKeySecret()
+    public void setConnectionFactory( ConnectionFactory connectionFactory )
     {
-        return awsAccessKeySecret;
-    }
-
-    public void setAwsAccessKeySecret( String awsAccessKeySecret )
-    {
-        this.awsAccessKeySecret = awsAccessKeySecret;
-    }
-
-    public void setFactory( ConnectionFactory factory )
-    {
-        this.factory = factory;
+        if ( this.connectionFactory == null )
+        {
+            this.connectionFactory = connectionFactory;
+        }
     }
 }

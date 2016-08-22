@@ -4,32 +4,31 @@ import com.amazon.sqs.javamessaging.SQSConnectionFactory;
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.QueueConnection;
 import javax.jms.QueueConnectionFactory;
+import java.util.logging.Logger;
 
+/**
+ * A thin wrapper around the com.amazon.sqs.javamessaging.SQSConnectionFactory class.
+ * Because that class does not have a default constructor, and it's other constructor is private
+ * a wrapper is needed in order to use that factory as with @Resource
+ */
 public class SqsFactory implements ConnectionFactory, QueueConnectionFactory
 {
-    private final static Logger log = LoggerFactory.getLogger( SqsFactory.class );
     private String awsRegion;
     private String awsAccessKey;
     private String awsAccessKeySecret;
     private SqsResourceAdapter resourceAdapter;
     private SQSConnectionFactory.Builder builder;
-    private String id;
-
-    public static Connection getConnection( String username, String password ) throws JMSException
-    {
-        return new SqsFactory().createConnection( username, password );
-    }
+    private Logger log = Logger.getLogger( SqsFactory.class.getName() );
 
     public SqsFactory()
     {
         builder = new SQSConnectionFactory.Builder();
+        log.info( "SqsFactory() - Constructed." );
     }
 
     @Override
@@ -104,16 +103,6 @@ public class SqsFactory implements ConnectionFactory, QueueConnectionFactory
         this.awsAccessKeySecret = awsAccessKeySecret;
     }
 
-    public String getId()
-    {
-        return id;
-    }
-
-    public void setId( String id )
-    {
-        this.id = id;
-    }
-
     public SqsResourceAdapter getResourceAdapter()
     {
         return resourceAdapter;
@@ -122,6 +111,6 @@ public class SqsFactory implements ConnectionFactory, QueueConnectionFactory
     public void setResourceAdapter( SqsResourceAdapter resourceAdapter )
     {
         this.resourceAdapter = resourceAdapter;
-        resourceAdapter.addFactory( this );
+        resourceAdapter.setConnectionFactory( this );
     }
 }

@@ -15,7 +15,6 @@ import javax.jms.TextMessage;
     activationConfig = {
         @ActivationConfigProperty( propertyName = "destinationType", propertyValue = "javax.jms.Queue" ),
         @ActivationConfigProperty( propertyName = "destination", propertyValue = "testQueue" ),
-        @ActivationConfigProperty( propertyName = "connectionFactory", propertyValue = "jms/connectionFactory" ),
     }
 )
 public class SqsMessageConsumer implements MessageListener
